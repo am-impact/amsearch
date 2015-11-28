@@ -1,0 +1,38 @@
+{% extends 'amsearch/_layouts/settings' %}
+
+{% set title = 'Search'|t %}
+{% set selectedTab = 'search' %}
+
+{% block fields %}
+    {{ forms.textField({
+        label: search.excerptPrefix.name|t,
+        id: search.excerptPrefix.handle,
+        name: search.excerptPrefix.handle,
+        value: search.excerptPrefix.value,
+        instructions: 'What to display in front of the excerpt?'|t,
+        first: true,
+    }) }}
+    {{ forms.textField({
+        label: search.excerptSuffix.name|t,
+        id: search.excerptSuffix.handle,
+        name: search.excerptSuffix.handle,
+        value: search.excerptSuffix.value,
+        instructions: 'What to display at the end of the excerpt?'|t,
+    }) }}
+    {{ forms.textField({
+        label: search.charsBeforeKeywords.name|t,
+        id: search.charsBeforeKeywords.handle,
+        name: search.charsBeforeKeywords.handle,
+        value: search.charsBeforeKeywords.value,
+        instructions: 'How many chars to display before the search keywords?'|t,
+        size: 5,
+    }) }}
+    {{ forms.textField({
+        label: search.charsAfterKeywords.name|t,
+        id: search.charsAfterKeywords.handle,
+        name: search.charsAfterKeywords.handle,
+        value: search.charsAfterKeywords.value,
+        instructions: 'How many chars to display after the search keywords?'|t,
+        size: 5,
+    }) }}
+{% endblock %}

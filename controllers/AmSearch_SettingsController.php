@@ -30,6 +30,18 @@ class AmSearch_SettingsController extends BaseController
     }
 
     /**
+     * Show General settings.
+     */
+    public function actionSearch()
+    {
+        $variables = array(
+            'type'   => AmSearchModel::SettingSearch,
+            'search' => craft()->amSearch_settings->getAllSettingsByType(AmSearchModel::SettingSearch)
+        );
+        $this->renderTemplate('amSearch/settings/search', $variables);
+    }
+
+    /**
      * Saves settings.
      */
     public function actionSaveSettings()

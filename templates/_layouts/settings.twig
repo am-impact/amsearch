@@ -1,0 +1,23 @@
+{% extends '_layouts/cp' %}
+
+{% set fullPageForm = true %}
+
+{% import '_includes/forms' as forms %}
+
+{% set crumbs = [
+    { label: craft.amSearch.name, url: url('amsearch') },
+    { label: 'Settings'|t, url: url('amsearch/settings') },
+    { label: title, url: '#' }
+] %}
+
+{% set tabs = {
+    general: { label: 'General'|t, url: url('amsearch/settings') },
+    search: { label: 'Search'|t, url: url('amsearch/settings/search') },
+} %}
+
+{% block content %}
+    <input type="hidden" name="settingsType" value="{{ type }}">
+    <input type="hidden" name="action" value="amSearch/settings/saveSettings">
+
+    {% block fields %}{% endblock %}
+{% endblock %}

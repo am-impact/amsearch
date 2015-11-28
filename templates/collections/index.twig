@@ -1,0 +1,54 @@
+{% extends 'amsearch/_layouts/overview' %}
+
+{% set title = 'Collections'|t %}
+{% set selectedTab = 'collections' %}
+
+{% set extraPageHeaderHtml %}
+    <div class="buttons right">
+        <div class="btngroup submit">
+            <a class="btn submit add icon" href="{{ url('amsearch/collections/new') }}">{{ 'New collection'|t }}</a>
+        </div>
+    </div>
+{% endset %}
+
+{% block content %}
+    <p id="nocollections"{% if collections %} class="hidden"{% endif %}>
+        {{ "No collections exist yet."|t }}
+    </p>
+
+    {% if collections %}
+        <table id="collections" class="data fullwidth collapsible">
+            <thead>
+                <th scope="col">{{ "Name"|t }}</th>
+                <th scope="col">{{ "Handle"|t }}</th>
+                <th scope="col">{{ "Type"|t }}</th>
+                <td class="thin"></td>
+            </thead>
+            <tbody>
+                {% for collection in collections %}
+                    <tr data-id="{{ collection.id }}" data-name="{{ collection.name|t }}">
+                        <th scope="row" data-title="{{ 'Name'|t }}">
+                            <a href="{{ url('amsearch/collections/edit/' ~ collection.id) }}">{{ collection.name }}</a>
+                        </th>
+                        <td data-title="{{ 'Handle'|t }}">
+                            <code>{{ collection.handle }}</code>
+                        </td>
+                        <td data-title="{{ 'Type'|t }}">
+                            {{ collection.type }}
+                        </td>
+                        <td class="thin"><a class="delete icon" title="{{ 'Delete'|t }}" role="button"></a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}
+
+{% set js %}
+    new Craft.AdminTable({
+        tableSelector: '#collections',
+        noObjectsSelector: '#nocollections',
+        deleteAction: 'amSearch/collections/deleteCollection'
+    });
+{% endset %}
+{% includeJs js %}

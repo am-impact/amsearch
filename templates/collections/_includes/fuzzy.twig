@@ -1,0 +1,63 @@
+{% for type, name in elementTypes %}
+    {%- set active = (collectionId is defined and collection.elementType == type ? true : (collectionId is defined ? false : loop.first)) -%}
+
+    <div id="{{ type }}"{% if not active %} class="hidden"{% endif %}>
+        {% if elementTypeSources[type] is not defined %}
+            {% set noSourcesInput %}
+                <p class="error">{{ 'No sources available.'|t }}</p>
+            {% endset %}
+            {{ forms.field({
+                label: "Source"|t,
+                instructions: "Which source do you want to select from?"|t,
+            }, noSourcesInput) }}
+        {% else %}
+            {{ forms.selectField({
+                label: "Source"|t,
+                instructions: "Which source do you want to select from?"|t,
+                id: 'settings[fuzzy][' ~ type ~ '][source]',
+                name: 'settings[fuzzy][' ~ type ~ '][source]',
+                options: attribute(elementTypeSources, type),
+                value: (collection is defined and collection.settings['source'] is defined ? collection.settings['source'] : null),
+            }) }}
+        {% endif %}
+
+        {% if attribute(elementTypeStatuses, type)|length > 2 %}
+            {{ forms.multiselectField({
+                label: "Status"|t,
+                instructions: "Which status do you want to select from?"|t,
+                id: 'settings[fuzzy][' ~ type ~ '][status]',
+                name: 'settings[fuzzy][' ~ type ~ '][status]',
+                options: attribute(elementTypeStatuses, type),
+                values: (collection is defined and collection.settings['status'] is defined ? collection.settings['status'] : null),
+            }) }}
+        {% else %}
+            {{ forms.selectField({
+                label: "Status"|t,
+                instructions: "Which status do you want to select from?"|t,
+                id: 'settings[fuzzy][' ~ type ~ '][status]',
+                name: 'settings[fuzzy][' ~ type ~ '][status]',
+                options: attribute(elementTypeStatuses, type),
+                value: (collection is defined and collection.settings['status'] is defined ? collection.settings['status'] : null),
+            }) }}
+        {% endif %}
+
+        {% if fieldsForKey[type] is not defined %}
+            {% set noKeysInput %}
+                <p class="error">{{ 'No keys available.'|t }}</p>
+            {% endset %}
+            {{ forms.field({
+                label: "Fuzzy key"|t,
+                instructions: "What key should be used to display the search results?"|t,
+            }, noKeysInput) }}
+        {% else %}
+            {{ forms.selectField({
+                label: "Fuzzy key"|t,
+                instructions: "What key should be used to display the search results?"|t,
+                id: 'settings[fuzzy][' ~ type ~ '][fuzzyKey]',
+                name: 'settings[fuzzy][' ~ type ~ '][fuzzyKey]',
+                options: attribute(fieldsForKey, type),
+                value: (collection is defined and collection.settings['fuzzyKey'] is defined ? collection.settings['fuzzyKey'] : null),
+            }) }}
+        {% endif %}
+    </div>
+{% endfor %}

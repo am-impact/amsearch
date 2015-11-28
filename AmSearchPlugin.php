@@ -65,12 +65,21 @@ class AmSearchPlugin extends BasePlugin
     public function registerCpRoutes()
     {
         return array(
-            'amsearch/sets' => array(
-                'action' => 'amSearch/sets/index'
+            'amsearch/collections' => array(
+                'action' => 'amSearch/collections/index'
+            ),
+            'amsearch/collections/new' => array(
+                'action' => 'amSearch/collections/editCollection'
+            ),
+            'amsearch/collections/edit/(?P<collectionId>\d+)' => array(
+                'action' => 'amSearch/collections/editCollection'
             ),
 
             'amsearch/settings' => array(
                 'action' => 'amSearch/settings/index'
+            ),
+            'amsearch/settings/search' => array(
+                'action' => 'amSearch/settings/search'
             ),
         );
     }
@@ -83,6 +92,9 @@ class AmSearchPlugin extends BasePlugin
     public function registerUserPermissions()
     {
         return array(
+            'accessAmSearchCollections' => array(
+                'label' => Craft::t('Access to collections')
+            ),
             'accessAmSearchSettings' => array(
                 'label' => Craft::t('Access to settings')
             )

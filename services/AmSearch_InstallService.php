@@ -12,6 +12,7 @@ class AmSearch_InstallService extends BaseApplicationComponent
     public function install()
     {
         $this->_installGeneral();
+        $this->_installSearch();
     }
 
     /**
@@ -76,6 +77,15 @@ class AmSearch_InstallService extends BaseApplicationComponent
     {
         $settings = craft()->config->get('general', 'amsearch');
         $this->installSettings($settings, AmSearchModel::SettingGeneral);
+    }
+
+    /**
+     * Install Search settings.
+     */
+    private function _installSearch()
+    {
+        $settings = craft()->config->get('search', 'amsearch');
+        $this->installSettings($settings, AmSearchModel::SettingSearch);
     }
 
     /**

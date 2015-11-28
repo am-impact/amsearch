@@ -1,0 +1,77 @@
+{% extends '_layouts/cp' %}
+
+{% set fullPageForm = true %}
+
+{% import '_includes/forms' as forms %}
+
+{% set title = (collectionId is defined ? 'Edit collection'|t : 'New collection'|t) %}
+
+{% set crumbs = [
+    { label: craft.amSearch.name, url: url('amsearch') },
+    { label: 'Collections'|t, url: url('amsearch/collections') },
+    { label: title, url: '#' }
+] %}
+
+{% block content %}
+    <input type="hidden" name="action" value="amSearch/collections/saveCollection">
+    <input type="hidden" name="redirect" value="amsearch/collections">
+    {% if collectionId is defined -%}<input type="hidden" name="collectionId" value="{{ collectionId }}">{% endif %}
+
+    {{ forms.textField({
+        label: "Name"|t,
+        instructions: "What this collection will be called in the CP."|t,
+        id: 'name',
+        name: 'name',
+        value: (collection is defined ? collection.name : null),
+        errors: (collection is defined ? collection.getErrors('name') : null),
+        first: true,
+        required: true,
+        autofocus: true,
+    }) }}
+    {{ forms.textField({
+        label: "Handle"|t,
+        instructions: "How you’ll refer to this collection in the templates."|t,
+        id: 'handle',
+        class: 'code',
+        name: 'handle',
+        maxlength: 64,
+        value: (collection is defined ? collection.handle : null),
+        errors: (collection is defined ? collection.getErrors('handle') : null),
+        required: true,
+    }) }}
+    <hr>
+    {{ forms.selectField({
+        label: "Type"|t,
+        instructions: "Functionality of a collection will differ per type."|t,
+        id: 'type',
+        name: 'type',
+        options: collectionTypes,
+        value: (collection is defined ? collection.type : null),
+        errors: (collection is defined ? collection.getErrors('type') : null),
+        required: true,
+        toggle: true,
+    }) }}
+    {{ forms.selectField({
+        label: "Element type"|t,
+        instructions: "Which element type is this collection about?"|t,
+        id: 'elementType',
+        name: 'elementType',
+        options: elementTypes,
+        value: (collection is defined ? collection.elementType : null),
+        errors: (collection is defined ? collection.getErrors('elementType') : null),
+        required: true,
+        toggle: true,
+    }) }}
+    <hr>
+    {% for collectionType, collectionName in collectionTypes %}
+        {%- set activeType = (collectionId is defined and collection.type == collectionType ? true : (collectionId is defined ? false : loop.first)) -%}
+
+        <div id="{{ collectionType }}"{% if not activeType %} class="hidden"{% endif %}>
+            {% include 'amsearch/collections/_includes/' ~ collectionType %}
+        </div>
+    {% endfor %}
+{% endblock %}
+
+{% if collectionId is not defined %}
+    {% includeJs "new Craft.HandleGenerator('#name', '#handle');" %}
+{% endif %}

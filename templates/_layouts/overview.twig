@@ -1,0 +1,26 @@
+{% extends (elementType is defined ? '_layouts/elementindex' : '_layouts/cp') %}
+
+{% if title is not defined %}
+    {% set title = craft.amSearch.name %}
+{% endif %}
+
+{% set tabs = {} %}
+
+{% if currentUser.can('accessAmSearchSollections') %}
+    {% set tabs = tabs|merge({ collections: {
+        label: 'Collections'|t,
+        url: url('amsearch/collections')
+    } }) %}
+{% endif %}
+{% if currentUser.can('accessAmSearchSettings') %}
+    {% set tabs = tabs|merge({ settings: {
+        label: 'Settings'|t,
+        url: url('amsearch/settings')
+    } }) %}
+{% endif %}
+
+{% set activeCrumb = attribute(tabs, selectedTab) %}
+{% set crumbs = [
+    { label: craft.amSearch.name, url: url('amsearch') },
+    { label: activeCrumb.label, url: activeCrumb.url }
+] %}
