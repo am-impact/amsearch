@@ -87,9 +87,6 @@ class AmSearch_SearchService extends BaseApplicationComponent
             $this->_getRecordsForCollection($collection);
         }
 
-        // Sort search results before returning them
-        $this->_sortSearchResults();
-
         // Limit and offset the results?
         $limit = $this->_getSearchParam('limit', false);
         if ($limit) {
@@ -199,6 +196,17 @@ class AmSearch_SearchService extends BaseApplicationComponent
                 // We handled the element!
                 $this->_handledElements[ $element['id'] ] = true;
             }
+        }
+
+        // Sort search results
+        switch ($collection->type) {
+            case 'fuzzy':
+                $this->_sortSearchResults('fuzzy');
+                break;
+
+            default:
+                $this->_sortSearchResults();
+                break;
         }
     }
 
@@ -372,11 +380,18 @@ class AmSearch_SearchService extends BaseApplicationComponent
 
     /**
      * Sort search results.
+     *
+     * @param string $key
      */
-    private function _sortSearchResults()
+    private function _sortSearchResults($key = 'searchScore')
     {
-        usort($this->_searchResults, function($a, $b) {
-            return (isset($a['searchScore']) ? $a['searchScore'] : 0) < (isset($b['searchScore']) ? $b['searchScore'] : 0);
+        usort($this->_searchResults, function($a, $b) use ($key) {
+            if ($key == 'searchScore') {
+                return (isset($a[$key]) ? $a[$key] : 0) < (isset($b[$key]) ? $b[$key] : 0);
+            }
+            else {
+                return strcmp((isset($a[$key]) ? $a[$key] : ''), (isset($b[$key]) ? $b[$key] : ''));
+            }
         });
     }
 }
