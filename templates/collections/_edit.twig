@@ -51,22 +51,24 @@
         required: true,
         toggle: true,
     }) }}
-    {{ forms.selectField({
-        label: "Element type"|t,
-        instructions: "Which element type is this collection about?"|t,
-        id: 'elementType',
-        name: 'elementType',
-        options: elementTypes,
-        value: (collection is defined ? collection.elementType : null),
-        errors: (collection is defined ? collection.getErrors('elementType') : null),
-        required: true,
-        toggle: true,
-    }) }}
-    <hr>
     {% for collectionType, collectionName in collectionTypes %}
         {%- set activeType = (collectionId is defined and collection.type == collectionType ? true : (collectionId is defined ? false : loop.first)) -%}
 
         <div id="{{ collectionType }}"{% if not activeType %} class="hidden"{% endif %}>
+            {{ forms.selectField({
+                label: "Element type"|t,
+                instructions: "Which element type is this collection about?"|t,
+                id: 'elementType',
+                name: 'elementType',
+                options: elementTypes,
+                value: (collection is defined ? collection.elementType : null),
+                errors: (collection is defined ? collection.getErrors('elementType') : null),
+                required: true,
+                toggle: true,
+                targetPrefix: collectionType ~ '_',
+            }) }}
+            <hr>
+
             {% include 'amsearch/collections/_includes/' ~ collectionType %}
         </div>
     {% endfor %}

@@ -1,7 +1,7 @@
 {% for type, name in elementTypes %}
     {%- set active = (collectionId is defined and collection.elementType == type ? true : (collectionId is defined ? false : loop.first)) -%}
 
-    <div id="{{ type }}"{% if not active %} class="hidden"{% endif %}>
+    <div id="{{ collectionType }}_{{ type }}"{% if not active %} class="hidden"{% endif %}>
         {% if elementTypeSources[type] is not defined %}
             {% set noSourcesInput %}
                 <p class="error">{{ 'No sources available.'|t }}</p>
