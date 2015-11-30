@@ -56,9 +56,14 @@ Craft.AmSearch = Garnish.Base.extend(
                 if (self.searchTimer) {
                     clearTimeout(self.searchTimer);
                 }
-                self.searchTimer = setTimeout($.proxy(function() {
-                    self.getCollectionData();
-                }, this), 600);
+                if (searchFor.trim() != '') {
+                    self.searchTimer = setTimeout($.proxy(function() {
+                        self.getCollectionData();
+                    }, this), 600);
+                }
+                else {
+                    self.$resultsContainer.html('');
+                }
             }
         }
     },
