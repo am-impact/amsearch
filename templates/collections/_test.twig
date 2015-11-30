@@ -1,0 +1,47 @@
+{% extends '_layouts/cp' %}
+
+{% import '_includes/forms' as forms %}
+
+{% set title = 'Test collection'|t %}
+
+{% set crumbs = [
+    { label: craft.amSearch.name, url: url('amsearch') },
+    { label: 'Collections'|t, url: url('amsearch/collections') },
+    { label: title, url: '#' }
+] %}
+
+{% block main %}
+    <div class="grid first">
+        <div class="item first" data-position="left" data-min-colspan="2" data-max-colspan="3">
+            <div class="pane">
+                <div class="amsearch">
+                    {{ forms.textField({
+                        label: "Keywords"|t,
+                        instructions: "What do you want to search for?"|t,
+                        id: 'keywords',
+                        name: 'keywords',
+                        class: 'amsearch--keywords',
+                        first: true,
+                        required: true,
+                        autofocus: true,
+                    }) }}
+
+                    <hr>
+                    <h2>{{ 'Search results'|t }}</h2>
+
+                    <div class="spinner hidden"></div>
+                    <div class="amsearch--results"></div>
+                </div>
+            </div>
+        </div>
+        <div class="item" data-position="right" data-colspan="1">
+            <div class="pane">
+                <h1>{{ 'Settings'|t }}</h1>
+
+                <p><strong>{{ 'Type'|t }}</strong>: {{ collectionType }}</p>
+                <p><strong>{{ 'Element type'|t }}</strong>: {{ elementType.name }}</p>
+                <p><strong>{{ 'Source'|t }}</strong>: {{ source.label }}</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

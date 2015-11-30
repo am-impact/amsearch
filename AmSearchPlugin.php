@@ -74,6 +74,9 @@ class AmSearchPlugin extends BasePlugin
             'amsearch/collections/edit/(?P<collectionId>\d+)' => array(
                 'action' => 'amSearch/collections/editCollection'
             ),
+            'amsearch/collections/test/(?P<collectionId>\d+)' => array(
+                'action' => 'amSearch/collections/testCollection'
+            ),
 
             'amsearch/settings' => array(
                 'action' => 'amSearch/settings/index'

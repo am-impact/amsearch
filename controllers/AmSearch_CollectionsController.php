@@ -114,6 +114,52 @@ class AmSearch_CollectionsController extends BaseController
     }
 
     /**
+     * Test a collection.
+     *
+     * @param array $variables
+     */
+    public function actionTestCollection(array $variables = array())
+    {
+        // Do we have a collection model?
+        if (! isset($variables['collection'])) {
+            // Get collection if available
+            if (! empty($variables['collectionId'])) {
+                $collection = craft()->amSearch_collections->getCollectionById($variables['collectionId']);
+
+                if (! $collection) {
+                    throw new Exception(Craft::t('No collection exists with the ID “{id}”.', array('id' => $variables['collectionId'])));
+                }
+            }
+            else {
+                throw new Exception(Craft::t('No collection given.'));
+            }
+        }
+        else {
+            throw new Exception(Craft::t('No collection given.'));
+        }
+
+        // Set variables
+        $variables['collection'] = $collection;
+        // Get available collection types
+        $variables['collectionType'] = ($collection->type == AmSearchModel::CollectionFuzzy ? Craft::t('Fuzzy') : Craft::t('Standard'));
+        $variables['elementType'] = craft()->elements->getElementType($collection->elementType);
+        $variables['source'] = $variables['elementType']->getSource($collection->settings['source']);
+
+        // Load resources
+        $js = sprintf('new Craft.AmSearch("%s", %s);',
+            $collection->handle,
+            $collection->type == AmSearchModel::CollectionFuzzy ? 'true' : 'false'
+        );
+        craft()->templates->includeJs($js);
+        craft()->templates->includeJsResource('amsearch/js/AmSearch.js');
+        if ($collection->type == AmSearchModel::CollectionFuzzy) {
+            craft()->templates->includeJsResource('amsearch/js/fuzzy.min.js');
+        }
+
+        $this->renderTemplate('amsearch/collections/_test', $variables);
+    }
+
+    /**
      * Delete a collection.
      */
     public function actionDeleteCollection()

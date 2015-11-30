@@ -22,6 +22,7 @@
                 <th scope="col">{{ "Name"|t }}</th>
                 <th scope="col">{{ "Handle"|t }}</th>
                 <th scope="col">{{ "Type"|t }}</th>
+                <th scope="col">{{ "Test"|t }}</th>
                 <td class="thin"></td>
             </thead>
             <tbody>
@@ -35,6 +36,9 @@
                         </td>
                         <td data-title="{{ 'Type'|t }}">
                             {{ collection.type }}
+                        </td>
+                        <td data-title="{{ 'Test'|t }}">
+                            <a href="{{ url('amsearch/collections/test/' ~ collection.id) }}">{{ 'Test'|t }}</a>
                         </td>
                         <td class="thin"><a class="delete icon" title="{{ 'Delete'|t }}" role="button"></a></td>
                     </tr>
