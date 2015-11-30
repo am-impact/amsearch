@@ -166,7 +166,7 @@ class AmSearch_SearchService extends BaseApplicationComponent
         // Set search criteria?
         $this->_keywords = null; // Always reset first, regardless of param
         $this->_scoreResults = null; // Always reset first, regardless of param
-        if ($this->_getSearchParam('keywords')) {
+        if ($this->_getSearchParam('keywords') && trim($this->_getSearchParam('keywords')) != '') {
             $this->_keywords = StringHelper::normalizeKeywords($this->_getSearchParam('keywords'));
             if (! $this->_setSearchCriteria($criteria, $query)) {
                 return false; // No search results!
