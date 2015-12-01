@@ -90,7 +90,7 @@ Craft.AmSearch = Garnish.Base.extend(
             self.searchTimer = false;
         }
 
-        Craft.postActionRequest('amSearch/search/search', data, $.proxy(function(response, textStatus) {
+        Craft.postActionRequest('amSearch/search/getResults', data, $.proxy(function(response, textStatus) {
             if (textStatus == 'success') {
                 self.isLoading = false;
 

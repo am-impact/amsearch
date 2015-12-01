@@ -100,8 +100,8 @@ class AmSearchVariable
      *
      * @return bool|array
      */
-    public function search($collectionHandles, $params = array())
+    public function getResults($collectionHandles, $params = array())
     {
-        return craft()->amSearch_search->search($collectionHandles, $params);
+        return craft()->amSearch_search->getResults($collectionHandles, $params);
     }
 }

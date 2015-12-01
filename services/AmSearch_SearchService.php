@@ -36,7 +36,7 @@ class AmSearch_SearchService extends BaseApplicationComponent
      *
      * @return bool|array
      */
-    public function search($collectionHandles, $params = array())
+    public function getResults($collectionHandles, $params = array())
     {
         // Get collections
         if (is_array($collectionHandles)) {

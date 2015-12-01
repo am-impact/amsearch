@@ -9,7 +9,7 @@ class AmSearch_SearchController extends BaseController
     /**
      * Start searching.
      */
-    public function actionSearch()
+    public function actionGetResults()
     {
         // Get required information
         $collections = craft()->request->getRequiredParam('collections');
@@ -21,7 +21,7 @@ class AmSearch_SearchController extends BaseController
         );
 
         // Find search results!
-        $results = craft()->amSearch_search->search($collections, $params);
+        $results = craft()->amSearch_search->getResults($collections, $params);
         if ($results) {
             $returnData['success'] = true;
             $returnData['results'] = $results;
