@@ -59,7 +59,7 @@
                 label: "Element type"|t,
                 instructions: "Which element type is this collection about?"|t,
                 id: 'elementType',
-                name: 'elementType',
+                name: collectionType ~ '_elementType',
                 options: elementTypes,
                 value: (collection is defined ? collection.elementType : null),
                 errors: (collection is defined ? collection.getErrors('elementType') : null),

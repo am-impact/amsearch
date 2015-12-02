@@ -89,7 +89,7 @@ class AmSearch_CollectionsController extends BaseController
         $collection->name        = craft()->request->getPost('name');
         $collection->handle      = craft()->request->getPost('handle');
         $collection->type        = craft()->request->getPost('type');
-        $collection->elementType = craft()->request->getPost('elementType');
+        $collection->elementType = craft()->request->getPost($collection->type . '_elementType');
 
         // Get settings
         $settings = craft()->request->getPost('settings');
