@@ -111,4 +111,17 @@ class AmSearchPlugin extends BasePlugin
     {
         craft()->amSearch_install->install();
     }
+
+    /**
+     * Add Twig Extensions.
+     */
+    public function addTwigExtension()
+    {
+        Craft::import('plugins.amsearch.helpers.AmSearchTemplateHelper');
+        Craft::import('plugins.amsearch.twigextensions.AmSearchPaginate_Node');
+        Craft::import('plugins.amsearch.twigextensions.AmSearchPaginate_TokenParser');
+        Craft::import('plugins.amsearch.twigextensions.SearchTwigExtension');
+
+        return new SearchTwigExtension();
+    }
 }

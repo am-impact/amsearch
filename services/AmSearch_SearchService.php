@@ -89,7 +89,7 @@ class AmSearch_SearchService extends BaseApplicationComponent
 
         // Limit and offset the results?
         $limit = $this->_getSearchParam('limit', false);
-        if ($limit) {
+        if ($limit && is_numeric($limit)) {
             $offset = $this->_getSearchParam('offset', 0);
             $this->_searchResults = array_slice($this->_searchResults, $offset, $limit);
         }
