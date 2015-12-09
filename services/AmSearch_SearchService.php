@@ -235,7 +235,7 @@ class AmSearch_SearchService extends BaseApplicationComponent
         $fuzzyKey = $this->_getCollectionSetting('fuzzyKey');
 
         // Does our element have the fuzzy key?
-        if (! isset($element[$fuzzyKey])) {
+        if (empty($fuzzyKey) || ! isset($element[$fuzzyKey])) {
             return false;
         }
 
@@ -258,12 +258,9 @@ class AmSearch_SearchService extends BaseApplicationComponent
      */
     private function _handleNormalElement($element)
     {
-        // What is our excerpt key?
-        $excerptKey = $this->_getCollectionSetting('excerptKey');
-
         // Set search result
         $searchResult = array(
-            'excerpt' => $this->_getElementExcerpt($element[$excerptKey]),
+            'excerpt' => $this->_getElementExcerpt($element),
             'type'    => Craft::t($element['type']),
             'url'     => $this->_getElementUrl($element),
         );
@@ -285,12 +282,23 @@ class AmSearch_SearchService extends BaseApplicationComponent
     /**
      * Get an element's excerpt.
      *
-     * @param string $fullString
+     * @param array $element
      *
      * @return string
      */
-    private function _getElementExcerpt($fullString)
+    private function _getElementExcerpt($element)
     {
+        // What is our excerpt key?
+        $excerptKey = $this->_getCollectionSetting('excerptKey');
+
+        // Do we have an excerpt option?
+        if (empty($excerptKey) || ! isset($element[$excerptKey])) {
+            return '';
+        }
+
+        // Get our full string
+        $fullString = $element[$excerptKey];
+
         // Strip HTML from string
         $fullString = StringHelper::stripHtml($fullString);
 

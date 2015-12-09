@@ -111,6 +111,12 @@ class AmSearch_ElementsService extends BaseApplicationComponent
                 continue;
             }
 
+            // Add empty option
+            $fields[$type][] = array(
+                'label' => Craft::t('None'),
+                'value' => '',
+            );
+
             // Get element criteria
             $criteria = craft()->elements->getCriteria($type);
 
