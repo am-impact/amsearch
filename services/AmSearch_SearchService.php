@@ -185,12 +185,24 @@ class AmSearch_SearchService extends BaseApplicationComponent
                 // Handle element
                 switch ($collection->type) {
                     case 'fuzzy':
-                        $this->_handleFuzzyElement($element);
+                        $searchResult = $this->_handleFuzzyElement($element);
                         break;
 
                     default:
-                        $this->_handleNormalElement($element);
+                        $searchResult = $this->_handleNormalElement($element);
                         break;
+                }
+
+                // Do we have a valid search result?
+                if ($searchResult !== false) {
+                    // Add collection data for this element
+                    $searchResult['collection'] = array(
+                        'name'   => $collection->name,
+                        'handle' => $collection->handle,
+                    );
+
+                    // Add this element to the search results
+                    $this->_searchResults[] = $searchResult;
                 }
 
                 // We handled the element!
@@ -214,6 +226,8 @@ class AmSearch_SearchService extends BaseApplicationComponent
      * Handle a fuzzy collection element.
      *
      * @param array $element
+     *
+     * @return mixed
      */
     private function _handleFuzzyElement($element)
     {
@@ -232,14 +246,15 @@ class AmSearch_SearchService extends BaseApplicationComponent
             'url'   => $this->_getElementUrl($element),
         );
 
-        // Add this element to the search results
-        $this->_searchResults[] = $searchResult;
+        return $searchResult;
     }
 
     /**
      * Handle a normal collection element.
      *
      * @param array $element
+     *
+     * @return mixed
      */
     private function _handleNormalElement($element)
     {
@@ -264,8 +279,7 @@ class AmSearch_SearchService extends BaseApplicationComponent
             $searchResult[$key] = $value;
         }
 
-        // Add this element to the search results
-        $this->_searchResults[] = $searchResult;
+        return $searchResult;
     }
 
     /**
