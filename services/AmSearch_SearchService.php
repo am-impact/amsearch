@@ -330,8 +330,8 @@ class AmSearch_SearchService extends BaseApplicationComponent
 
         // Get excerpt!
         $plainText = substr($fullString, $extractStart, $extractEnd - $extractStart);
-
-        return StringHelper::convertToUTF8($prefix . $plainText . $suffix);
+        $plainText = preg_replace("/(" . $this->_keywords . ")/i", "<strong>$1</strong>", StringHelper::convertToUTF8($plainText));
+        return new \Twig_Markup($prefix . $plainText . $suffix, craft()->templates->getTwig()->getCharset());
     }
 
     /**
