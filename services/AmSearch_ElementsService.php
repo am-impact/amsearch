@@ -113,6 +113,9 @@ class AmSearch_ElementsService extends BaseApplicationComponent
 
             // Add empty option
             $fields[$type][] = array(
+                'optgroup' => Craft::t('Standard')
+            );
+            $fields[$type][] = array(
                 'label' => Craft::t('None'),
                 'value' => '',
             );
@@ -122,9 +125,6 @@ class AmSearch_ElementsService extends BaseApplicationComponent
 
             // Add element title?
             if ($elementType->hasTitles()) {
-                $fields[$type][] = array(
-                    'optgroup' => Craft::t('Standard')
-                );
                 $fields[$type][] = array(
                     'label'    => Craft::t('Title'),
                     'value'    => 'title',
