@@ -32,6 +32,14 @@ class AmSearchPlugin extends BasePlugin
     }
 
     /**
+     * @return string|null
+     */
+    public function getSchemaVersion()
+    {
+        return '2.0.0';
+    }
+
+    /**
      * @return string
      */
     public function getDeveloper()
@@ -45,6 +53,14 @@ class AmSearchPlugin extends BasePlugin
     public function getDeveloperUrl()
     {
         return 'http://www.am-impact.nl';
+    }
+
+    /**
+     * @return string
+     */
+    public function getSettingsUrl()
+    {
+        return 'amsearch/settings';
     }
 
     /**
