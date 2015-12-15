@@ -13,6 +13,7 @@ class AmSearch_CollectionRecord extends BaseRecord
         return array(
             'name'        => array(AttributeType::String, 'required' => true),
             'handle'      => array(AttributeType::String, 'required' => true),
+            'customUrl'   => array(AttributeType::String),
             'type'        => array(AttributeType::String, 'required' => true),
             'elementType' => array(AttributeType::String, 'required' => true),
             'settings'    => array(AttributeType::Mixed),

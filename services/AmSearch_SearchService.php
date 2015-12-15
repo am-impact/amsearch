@@ -19,7 +19,7 @@ class AmSearch_SearchService extends BaseApplicationComponent
     private $_charsAfterKeywords = null;
 
     private $_handledElements;
-    private $_collectionSettings;
+    private $_collection;
     private $_searchParams;
 
     /**
@@ -80,8 +80,8 @@ class AmSearch_SearchService extends BaseApplicationComponent
 
         // Get data for each collection
         foreach ($collections as $collection) {
-            // Set settings
-            $this->_collectionSettings = $collection->settings;
+            // Set collection
+            $this->_collection = $collection;
 
             // Get records!
             $this->_getRecordsForCollection($collection);
@@ -119,9 +119,9 @@ class AmSearch_SearchService extends BaseApplicationComponent
      */
     private function _getCollectionSetting($name)
     {
-        if ($this->_collectionSettings) {
-            if (isset($this->_collectionSettings[$name])) {
-                return $this->_collectionSettings[$name];
+        if ($this->_collection->settings) {
+            if (isset($this->_collection->settings[$name])) {
+                return $this->_collection->settings[$name];
             }
         }
 
@@ -343,12 +343,25 @@ class AmSearch_SearchService extends BaseApplicationComponent
      */
     private function _getElementUrl($element)
     {
-        // Set element URL
         $url = '';
+
+        // Element type URL?
         if (isset($element['uri']) && ! empty($element['uri'])) {
             $url = $this->_siteUrl
                  . ($element['uri'] != '__home__' ? $element['uri'] : '')
                  . ($this->_addTrailingSlash ? '/' : '');
+        }
+
+        // Custom URL?
+        if ($this->_collection->customUrl) {
+            // Translate the URL first
+            $url = Craft::t($this->_collection->customUrl);
+
+            // Parse through object
+            $url = craft()->templates->renderObjectTemplate($url, $element);
+
+            // Parse through environment variables
+            $url = craft()->config->parseEnvironmentString($url);
         }
 
         return $url;

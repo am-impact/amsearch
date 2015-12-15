@@ -9,6 +9,7 @@ class AmSearch_CollectionModel extends BaseModel
             'id'          => AttributeType::Number,
             'name'        => AttributeType::String,
             'handle'      => AttributeType::String,
+            'customUrl'   => AttributeType::String,
             'type'        => AttributeType::String,
             'elementType' => AttributeType::String,
             'settings'    => AttributeType::Mixed,

@@ -108,7 +108,15 @@ Craft.AmSearch = Garnish.Base.extend(
                     else {
                         // Process the results to extract the strings
                         var results = self.searchResults.map(function(el) {
-                            var title = (el['title'] != undefined ? '<strong>' + el.title + '</strong><br>' : '');
+                            switch(el.type) {
+                                case 'User':
+                                    var title = '<strong>' + el.firstName + ' ' + el.lastName + '</strong><br>' + '<i>' + el.email + '</i><br>';
+                                    break;
+
+                                default:
+                                    var title = (el['title'] != undefined ? '<strong>' + el.title + '</strong><br>' : (el['name'] != undefined ? '<strong>' + el.name + '</strong><br>' : ''));
+                                    break;
+                            }
 
                             return '<p>' + title + el.excerpt + '</p>';
                         });

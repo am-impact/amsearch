@@ -88,6 +88,7 @@ class AmSearch_CollectionsController extends BaseController
         // Collection attributes
         $collection->name        = craft()->request->getPost('name');
         $collection->handle      = craft()->request->getPost('handle');
+        $collection->customUrl   = craft()->request->getPost('customUrl');
         $collection->type        = craft()->request->getPost('type');
         $collection->elementType = craft()->request->getPost($collection->type . '_elementType');
 

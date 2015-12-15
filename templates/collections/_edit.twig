@@ -39,6 +39,14 @@
         errors: (collection is defined ? collection.getErrors('handle') : null),
         required: true,
     }) }}
+    {{ forms.textField({
+        label: "Custom URL format"|t,
+        instructions: "What the URLs should look like. You can include tags that output the element type properties, such as {title} or {createDate}."|t,
+        id: 'customUrl',
+        name: 'customUrl',
+        value: (collection is defined ? collection.customUrl : null),
+        errors: (collection is defined ? collection.getErrors('customUrl') : null),
+    }) }}
     <hr>
     {{ forms.selectField({
         label: "Type"|t,
