@@ -6,7 +6,7 @@
 
 {% set tabs = {} %}
 
-{% if currentUser.can('accessAmSearchSollections') %}
+{% if currentUser.can('accessAmSearchCollections') %}
     {% set tabs = tabs|merge({ collections: {
         label: 'Collections'|t,
         url: url('amsearch/collections')

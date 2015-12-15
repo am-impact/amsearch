@@ -30,7 +30,7 @@ class AmSearch_SettingsController extends BaseController
     }
 
     /**
-     * Show General settings.
+     * Show Search settings.
      */
     public function actionSearch()
     {

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * AmForms Default Configuration.
+ * AmSearch Default Configuration.
  */
 return array(
     'general' => array(
