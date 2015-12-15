@@ -339,6 +339,11 @@ class AmSearch_SearchService extends BaseApplicationComponent
         // Get excerpt!
         $plainText = substr($fullString, $extractStart, $extractEnd - $extractStart);
         $plainText = preg_replace("/(" . $this->_keywords . ")/i", "<strong>$1</strong>", StringHelper::convertToUTF8($plainText));
+
+        // Handle CP request differently, otherwise while testing, the excerpt has become an object
+        if (craft()->request->isCpRequest()) {
+            return $prefix . $plainText . $suffix;
+        }
         return new \Twig_Markup($prefix . $plainText . $suffix, craft()->templates->getTwig()->getCharset());
     }
 
