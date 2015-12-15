@@ -84,7 +84,7 @@ class AmSearch_SearchService extends BaseApplicationComponent
             $this->_collection = $collection;
 
             // Get records!
-            $this->_getRecordsForCollection($collection);
+            $this->_getRecordsForCollection();
         }
 
         // Limit and offset the results?
@@ -129,14 +129,12 @@ class AmSearch_SearchService extends BaseApplicationComponent
     }
 
     /**
-     * Get database records for a collection.
-     *
-     * @param AmSearch_CollectionModel $collection
+     * Get database records for current collection.
      */
-    private function _getRecordsForCollection(AmSearch_CollectionModel $collection)
+    private function _getRecordsForCollection()
     {
         // Get element criteria
-        $criteria = craft()->elements->getCriteria($collection->elementType);
+        $criteria = craft()->elements->getCriteria($this->_collection->elementType);
         $criteria->locale = $this->_getSearchParam('locale');
 
         // Get element type
@@ -176,42 +174,52 @@ class AmSearch_SearchService extends BaseApplicationComponent
         // Find records!
         $elements = $query->queryAll();
         if ($elements) {
-            foreach ($elements as $element) {
-                // Did we add this element to the search results already?
-                if (isset($this->_handledElements[ $element['id'] ])) {
-                    continue;
-                }
+            $this->_handleElements($elements);
+        }
+    }
 
-                // Handle element
-                switch ($collection->type) {
-                    case 'fuzzy':
-                        $searchResult = $this->_handleFuzzyElement($element);
-                        break;
-
-                    default:
-                        $searchResult = $this->_handleNormalElement($element);
-                        break;
-                }
-
-                // Do we have a valid search result?
-                if ($searchResult !== false) {
-                    // Add collection data for this element
-                    $searchResult['collection'] = array(
-                        'name'   => $collection->name,
-                        'handle' => $collection->handle,
-                    );
-
-                    // Add this element to the search results
-                    $this->_searchResults[] = $searchResult;
-                }
-
-                // We handled the element!
-                $this->_handledElements[ $element['id'] ] = true;
+    /**
+     * Handle records / elements from a collection.
+     *
+     * @param array $elements
+     */
+    private function _handleElements($elements)
+    {
+        foreach ($elements as $element) {
+            // Did we add this element to the search results already?
+            if (isset($this->_handledElements[ $element['id'] ])) {
+                continue;
             }
+
+            // Handle element
+            switch ($this->_collection->type) {
+                case 'fuzzy':
+                    $searchResult = $this->_handleFuzzyElement($element);
+                    break;
+
+                default:
+                    $searchResult = $this->_handleNormalElement($element);
+                    break;
+            }
+
+            // Do we have a valid search result?
+            if ($searchResult !== false) {
+                // Add collection data for this element
+                $searchResult['collection'] = array(
+                    'name'   => $this->_collection->name,
+                    'handle' => $this->_collection->handle,
+                );
+
+                // Add this element to the search results
+                $this->_searchResults[] = $searchResult;
+            }
+
+            // We handled the element!
+            $this->_handledElements[ $element['id'] ] = true;
         }
 
         // Sort search results
-        switch ($collection->type) {
+        switch ($this->_collection->type) {
             case 'fuzzy':
                 $this->_sortSearchResults('fuzzy');
                 break;
