@@ -6,6 +6,8 @@ namespace Craft;
  */
 class AmSearch_SearchController extends BaseController
 {
+    protected $allowAnonymous = true;
+
     /**
      * Start searching.
      */
