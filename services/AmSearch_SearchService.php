@@ -171,6 +171,11 @@ class AmSearch_SearchService extends BaseApplicationComponent
             }
         }
 
+        // Get user fullName if correct collection is given
+        if ($this->_collection->elementType == ElementType::User) {
+            $query->addSelect('IF (users.lastName != "", CONCAT_WS(" ", users.firstName, users.lastName), users.firstName) AS fullName');
+        }
+
         // Find records!
         $elements = $query->queryAll();
         if ($elements) {
