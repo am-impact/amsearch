@@ -252,11 +252,17 @@ class AmSearch_SearchService extends BaseApplicationComponent
             return false;
         }
 
+        // Does our element have an URL?
+        $url = $this->_getElementUrl($element);
+        if (! $url) {
+            return false;
+        }
+
         // Set search result
         $searchResult = array(
             'fuzzy' => $element[$fuzzyKey],
             'type'  => Craft::t($element['type']),
-            'url'   => $this->_getElementUrl($element),
+            'url'   => $url,
         );
 
         return $searchResult;
@@ -271,11 +277,17 @@ class AmSearch_SearchService extends BaseApplicationComponent
      */
     private function _handleNormalElement($element)
     {
+        // Does our element have an URL?
+        $url = $this->_getElementUrl($element);
+        if (! $url) {
+            return false;
+        }
+
         // Set search result
         $searchResult = array(
             'excerpt' => $this->_getElementExcerpt($element),
             'type'    => Craft::t($element['type']),
-            'url'     => $this->_getElementUrl($element),
+            'url'     => $url,
         );
 
         // Should we set a search score on the element?
@@ -357,18 +369,19 @@ class AmSearch_SearchService extends BaseApplicationComponent
      *
      * @param array $element
      *
-     * @return string
+     * @return bool|string
      */
     private function _getElementUrl($element)
     {
-        $url = '';
-
-        // Element type URL?
-        if (isset($element['uri']) && ! empty($element['uri'])) {
-            $url = $this->_siteUrl
-                 . ($element['uri'] != '__home__' ? $element['uri'] : '')
-                 . ($this->_addTrailingSlash ? '/' : '');
+        // Does this element have an URL at all?
+        if (! isset($element['uri']) || empty($element['uri'])) {
+            return false;
         }
+
+        // Element URL
+        $url = $this->_siteUrl
+             . ($element['uri'] != '__home__' ? $element['uri'] : '')
+             . ($this->_addTrailingSlash ? '/' : '');
 
         // Custom URL?
         if ($this->_collection->customUrl) {
