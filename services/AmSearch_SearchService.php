@@ -381,7 +381,7 @@ class AmSearch_SearchService extends BaseApplicationComponent
         // Element URL
         $url = $this->_siteUrl
              . ($element['uri'] != '__home__' ? $element['uri'] : '')
-             . ($this->_addTrailingSlash ? '/' : '');
+             . ($element['uri'] != '__home__' && $this->_addTrailingSlash ? '/' : '');
 
         // Custom URL?
         if ($this->_collection->customUrl) {
