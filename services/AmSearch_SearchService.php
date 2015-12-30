@@ -374,14 +374,9 @@ class AmSearch_SearchService extends BaseApplicationComponent
     private function _getElementUrl($element)
     {
         // Does this element have an URL at all?
-        if (! isset($element['uri']) || empty($element['uri'])) {
+        if ((! isset($element['uri']) || empty($element['uri'])) && ! $this->_collection->customUrl) {
             return false;
         }
-
-        // Element URL
-        $url = $this->_siteUrl
-             . ($element['uri'] != '__home__' ? $element['uri'] : '')
-             . ($element['uri'] != '__home__' && $this->_addTrailingSlash ? '/' : '');
 
         // Custom URL?
         if ($this->_collection->customUrl) {
@@ -393,6 +388,12 @@ class AmSearch_SearchService extends BaseApplicationComponent
 
             // Parse through environment variables
             $url = craft()->config->parseEnvironmentString($url);
+        }
+        else {
+            // Element URL
+            $url = $this->_siteUrl
+                 . ($element['uri'] != '__home__' ? $element['uri'] : '')
+                 . ($element['uri'] != '__home__' && $this->_addTrailingSlash ? '/' : '');
         }
 
         return $url;
