@@ -46,10 +46,22 @@
                 <p class="error">{{ 'No keys available.'|t }}</p>
             {% endset %}
             {{ forms.field({
+                label: "Title key"|t,
+                instructions: "What key should be used to display the title in the search results?"|t,
+            }, noKeysInput) }}
+            {{ forms.field({
                 label: "Excerpt key"|t,
                 instructions: "What key should be used to display the excerpt in the search results?"|t,
             }, noKeysInput) }}
         {% else %}
+            {{ forms.selectField({
+                label: "Title key"|t,
+                instructions: "What key should be used to display the title in the search results?"|t,
+                id: 'settings[normal][' ~ type ~ '][titleKey]',
+                name: 'settings[normal][' ~ type ~ '][titleKey]',
+                options: attribute(fieldsForKey, type),
+                value: (collection is defined and collection.settings['titleKey'] is defined ? collection.settings['titleKey'] : null),
+            }) }}
             {{ forms.selectField({
                 label: "Excerpt key"|t,
                 instructions: "What key should be used to display the excerpt in the search results?"|t,
