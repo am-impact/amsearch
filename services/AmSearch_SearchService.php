@@ -33,6 +33,8 @@ class AmSearch_SearchService extends BaseApplicationComponent
      * - keywords   Search keywords.
      * - limit      Limit the search results.
      * - offset     Offset in the search results.
+     * - order      Order by a certain key. (Note: Only available with one collection!)
+     * - sort       Sort direction when the order param is given. (Note: Only available with one collection!)
      *
      * @return bool|array
      */
@@ -92,6 +94,13 @@ class AmSearch_SearchService extends BaseApplicationComponent
 
             // Stop timer
             craft()->amSearch_debug->addMessage('----- Finished -----', true);
+        }
+
+        // Order the results by a certain key?
+        $order = $this->_getSearchParam('order', false);
+        $sort = $this->_getSearchParam('sort', 'asc');
+        if ($order && count($collections) == 1) {
+            $this->_sortSearchResults($order, $sort);
         }
 
         // Limit and offset the results?
@@ -515,14 +524,18 @@ class AmSearch_SearchService extends BaseApplicationComponent
      * Sort search results.
      *
      * @param string $key
+     * @param string $direction
      */
-    private function _sortSearchResults($key = 'searchScore')
+    private function _sortSearchResults($key = 'searchScore', $direction = 'asc')
     {
-        usort($this->_searchResults, function($a, $b) use ($key) {
+        usort($this->_searchResults, function($a, $b) use ($key, $direction) {
             if ($key == 'searchScore') {
                 return (isset($a[$key]) ? $a[$key] : 0) < (isset($b[$key]) ? $b[$key] : 0);
             }
             else {
+                if (strtolower($direction) == 'desc') {
+                    return strcmp((isset($b[$key]) ? $b[$key] : ''), (isset($a[$key]) ? $a[$key] : ''));
+                }
                 return strcmp((isset($a[$key]) ? $a[$key] : ''), (isset($b[$key]) ? $b[$key] : ''));
             }
         });

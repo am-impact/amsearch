@@ -97,6 +97,8 @@ class AmSearchVariable
      * - keywords   Search keywords.
      * - limit      Limit the search results.
      * - offset     Offset in the search results.
+     * - order      Order by a certain key. (Note: Only available with one collection!)
+     * - sort       Sort direction when the order param is given. (Note: Only available with one collection!)
      *
      * @return bool|array
      */
