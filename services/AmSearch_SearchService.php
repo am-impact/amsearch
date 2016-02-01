@@ -158,6 +158,7 @@ class AmSearch_SearchService extends BaseApplicationComponent
         // Get element criteria
         $criteria = craft()->elements->getCriteria($this->_collection->elementType);
         $criteria->locale = $this->_getSearchParam('locale');
+        $criteria->limit = null;
 
         // Get element type
         $elementType = $criteria->getElementType();
