@@ -464,6 +464,9 @@ class AmSearch_SearchService extends BaseApplicationComponent
 
             // Parse through environment variables
             $url = craft()->config->parseEnvironmentString($url);
+
+            // Combine the parsed URL with the siteUrl
+            $url = $this->_siteUrl . $url;
         }
         else {
             // Element URL
