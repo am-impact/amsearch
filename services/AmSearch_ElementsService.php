@@ -55,12 +55,17 @@ class AmSearch_ElementsService extends BaseApplicationComponent
                 continue;
             }
 
-            foreach ($elementType->getSources() as $key => $source) {
-                if (!isset($source['heading'])) {
-                    $sources[$type][] = array(
-                        'label' => $source['label'],
-                        'value' => $key,
-                    );
+            // Get the Element Type's sources
+            $typeSources = $elementType->getSources();
+
+            if ($typeSources) {
+                foreach ($typeSources as $key => $source) {
+                    if (! isset($source['heading'])) {
+                        $sources[$type][] = array(
+                            'label' => $source['label'],
+                            'value' => $key,
+                        );
+                    }
                 }
             }
         }
