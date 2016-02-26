@@ -23,6 +23,11 @@ class AmSearchPlugin extends BasePlugin
         return Craft::t('a&m search');
     }
 
+    public function getReleaseFeedUrl()
+    {
+        return 'https://raw.githubusercontent.com/am-impact/amsearch/master/releases.json';
+    }
+
     /**
      * @return string
      */
