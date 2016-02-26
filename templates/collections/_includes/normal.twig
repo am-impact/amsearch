@@ -11,13 +11,13 @@
                 instructions: "Which source do you want to select from?"|t,
             }, noSourcesInput) }}
         {% else %}
-            {{ forms.selectField({
+            {{ forms.checkboxSelectField({
                 label: "Source"|t,
                 instructions: "Which source do you want to select from?"|t,
                 id: 'settings[normal][' ~ type ~ '][source]',
                 name: 'settings[normal][' ~ type ~ '][source]',
                 options: attribute(elementTypeSources, type),
-                value: (collection is defined and collection.settings['source'] is defined ? collection.settings['source'] : null),
+                values: (collection is defined and collection.settings['source'] is defined ? collection.settings['source'] : null),
             }) }}
         {% endif %}
 

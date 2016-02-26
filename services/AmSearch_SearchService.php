@@ -165,12 +165,37 @@ class AmSearch_SearchService extends BaseApplicationComponent
 
         // Set element source
         if ($this->_getCollectionSetting('source')) {
-            $source = $elementType->getSource($this->_getCollectionSetting('source'));
+            $sources = $this->_getCollectionSetting('source');
 
-            // Does the source specify any criteria attributes?
-            if ($source && ! empty($source['criteria'])) {
-                $criteria->setAttributes($source['criteria']);
+            if (! is_array($sources)) {
+                $sources = array($sources);
             }
+
+            // Gather all criteria
+            $sourcesCriteria = array();
+
+            foreach ($sources as $source) {
+                $elementSource = $elementType->getSource($source);
+
+                // Does the source specify any criteria attributes?
+                if ($elementSource && ! empty($elementSource['criteria'])) {
+                    foreach ($elementSource['criteria'] as $key => $value) {
+                        // Add to the gathered criteria
+                        if (! isset($sourcesCriteria[$key])) {
+                            $sourcesCriteria[$key] = is_array($value) ? $value : array($value);
+                        }
+                        elseif (is_array($value)) {
+                            $sourcesCriteria[$key] = array_merge($sourcesCriteria[$key], $value);
+                        }
+                        else {
+                            $sourcesCriteria[$key][] = $value;
+                        }
+                    }
+                }
+            }
+
+            // Set all criteria now!
+            $criteria->setAttributes($sourcesCriteria);
         }
 
         // Set element status

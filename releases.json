@@ -1,0 +1,10 @@
+[
+    {
+        "version": "2.0.4",
+        "downloadUrl": "https://github.com/am-impact/amsearch/archive/master.zip",
+        "date": "2016-02-26T12:00:00+01:00",
+        "notes": [
+            "[Improved] You can now select multiple sources instead of just one."
+        ]
+    }
+]
