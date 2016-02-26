@@ -194,6 +194,15 @@ class AmSearch_SearchService extends BaseApplicationComponent
                 }
             }
 
+            // Criteria fixes
+            switch ($this->_collection->elementType) {
+                case ElementType::Entry:
+                    if (isset($sourcesCriteria['editable'])) {
+                        unset($sourcesCriteria['editable']);
+                    }
+                    break;
+            }
+
             // Set all criteria now!
             $criteria->setAttributes($sourcesCriteria);
         }
