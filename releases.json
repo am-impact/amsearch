@@ -1,5 +1,13 @@
 [
     {
+        "version": "2.0.6",
+        "downloadUrl": "https://github.com/am-impact/amsearch/archive/master.zip",
+        "date": "2016-04-18T10:00:00+01:00",
+        "notes": [
+            "[Added] Added plugin icons."
+        ]
+    },
+    {
         "version": "2.0.5",
         "downloadUrl": "https://github.com/am-impact/amsearch/archive/master.zip",
         "date": "2016-02-26T15:30:00+01:00",
