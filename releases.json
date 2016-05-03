@@ -1,5 +1,13 @@
 [
     {
+        "version": "2.0.7",
+        "downloadUrl": "https://github.com/am-impact/amsearch/archive/master.zip",
+        "date": "2016-05-03T10:00:00+01:00",
+        "notes": [
+            "[Fixed] Fix dates when getting results, to the correct timezone."
+        ]
+    },
+    {
         "version": "2.0.6",
         "downloadUrl": "https://github.com/am-impact/amsearch/archive/master.zip",
         "date": "2016-04-18T10:00:00+01:00",

@@ -384,6 +384,11 @@ class AmSearch_SearchService extends BaseApplicationComponent
 
         // Correct fields to field handles
         foreach ($element as $key => $value) {
+            // Fix dates
+            if (is_string($value) && preg_match('/^\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d$/', $value)) {
+                $value = DateTime::createFromString($value)->mySqlDateTime();
+            }
+
             $key = str_replace('field_', '', $key);
             $searchResult[$key] = $value;
         }
