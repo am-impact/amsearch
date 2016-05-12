@@ -34,6 +34,7 @@ return array(
     'No sources available.' => 'Geen bronnen beschikbaar.',
     'Plugin name' => 'Plugin naam',
     'Plugin name for the end user.' => 'Plugin naam voor de eind gebruiker.',
+    'Require login for results' => 'Login verplicht voor resultaten',
     'Search results' => 'Zoekresultaten',
     'Settings saved.' => 'Instellingen opgeslagen.',
     'Standard' => 'Standaard',

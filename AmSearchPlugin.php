@@ -33,7 +33,7 @@ class AmSearchPlugin extends BasePlugin
      */
     public function getVersion()
     {
-        return '2.0.7';
+        return '2.0.8';
     }
 
     /**
@@ -41,7 +41,7 @@ class AmSearchPlugin extends BasePlugin
      */
     public function getSchemaVersion()
     {
-        return '2.0.2';
+        return '2.0.8';
     }
 
     /**

@@ -9,6 +9,10 @@ return array(
             'name' => 'Plugin name',
             'value' => '',
         ),
+        array(
+            'name' => 'Require login for results',
+            'value' => false,
+        ),
     ),
     'search' => array(
         array(

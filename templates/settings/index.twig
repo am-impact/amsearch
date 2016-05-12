@@ -12,4 +12,10 @@
         instructions: 'Plugin name for the end user.'|t,
         first: true,
     }) }}
+    {{ forms.lightswitchField({
+        label: general.requireLoginForResults.name|t,
+        id: general.requireLoginForResults.handle,
+        name: general.requireLoginForResults.handle,
+        on: general.requireLoginForResults.value,
+    }) }}
 {% endblock %}

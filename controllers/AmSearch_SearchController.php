@@ -13,6 +13,13 @@ class AmSearch_SearchController extends BaseController
      */
     public function actionGetResults()
     {
+        // Require login?
+        $currentUser = craft()->userSession->getUser();
+        $requireLogin = craft()->amSearch_settings->getSettingsByHandleAndType('requireLoginForResults', AmSearchModel::SettingGeneral);
+        if ($requireLogin && $requireLogin->value && (! $currentUser || ! $currentUser->id)) {
+            throw new HttpException(404);
+        }
+
         // Get required information
         $collections = craft()->request->getRequiredParam('collections');
         $params = craft()->request->getParam('params', array());

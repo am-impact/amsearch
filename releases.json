@@ -1,5 +1,13 @@
 [
     {
+        "version": "2.0.8",
+        "downloadUrl": "https://github.com/am-impact/amsearch/archive/master.zip",
+        "date": "2016-05-12T10:00:00+01:00",
+        "notes": [
+            "[Added] Require login for results setting. When enabled, this will only give search results through the controller action, when users are logged in."
+        ]
+    },
+    {
         "version": "2.0.7",
         "downloadUrl": "https://github.com/am-impact/amsearch/archive/master.zip",
         "date": "2016-05-03T10:00:00+01:00",
