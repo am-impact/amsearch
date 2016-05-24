@@ -40,6 +40,10 @@ class AmSearch_SearchService extends BaseApplicationComponent
      */
     public function getResults($collectionHandles, $params = array())
     {
+        // Max power!
+        craft()->config->maxPowerCaptain();
+        craft()->config->set('cacheElementQueries', false);
+
         // Get collections
         if (is_array($collectionHandles)) {
             $collections = craft()->amSearch_collections->getCollectionsByHandle($collectionHandles);
