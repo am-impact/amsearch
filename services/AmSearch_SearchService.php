@@ -89,15 +89,8 @@ class AmSearch_SearchService extends BaseApplicationComponent
             // Set collection
             $this->_collection = $collection;
 
-            // Start timer
-            craft()->amSearch_debug->addMessage('Starting collection: ' . $this->_collection->name);
-            craft()->amSearch_debug->startTimer(true);
-
             // Get records!
             $this->_getRecordsForCollection();
-
-            // Stop timer
-            craft()->amSearch_debug->addMessage('----- Finished -----', true);
         }
 
         // Order the results by a certain key?
@@ -113,9 +106,6 @@ class AmSearch_SearchService extends BaseApplicationComponent
             $offset = $this->_getSearchParam('offset', 0);
             $this->_searchResults = array_slice($this->_searchResults, $offset, $limit);
         }
-
-        // Debug messages
-        craft()->amSearch_debug->getMessages(true);
 
         return $this->_searchResults;
     }
@@ -156,9 +146,6 @@ class AmSearch_SearchService extends BaseApplicationComponent
      */
     private function _getRecordsForCollection()
     {
-        // Start timer
-        craft()->amSearch_debug->startTimer();
-
         // Get element criteria
         $criteria = craft()->elements->getCriteria($this->_collection->elementType);
         $criteria->locale = $this->_getSearchParam('locale');
@@ -219,32 +206,17 @@ class AmSearch_SearchService extends BaseApplicationComponent
         // Get the element's query
         $query = craft()->elements->buildElementsQuery($criteria);
         if (! $query) {
-            // Stop timer
-            craft()->amSearch_debug->addMessage('Elements query came up empty.');
-
             return false;
         }
-
-        // Stop timer
-        craft()->amSearch_debug->addMessage('Elements query built.');
 
         // Set search criteria?
         $this->_keywords = null; // Always reset first, regardless of param
         $this->_scoreResults = null; // Always reset first, regardless of param
         if ($this->_getSearchParam('keywords') && trim($this->_getSearchParam('keywords')) != '') {
-            // Start timer
-            craft()->amSearch_debug->startTimer();
-
             $this->_keywords = StringHelper::normalizeKeywords($this->_getSearchParam('keywords'));
             if (! $this->_setSearchCriteria($criteria, $query)) {
-                // Stop timer
-                craft()->amSearch_debug->addMessage('Search score came up empty.');
-
                 return false; // No search results!
             }
-
-            // Stop timer
-            craft()->amSearch_debug->addMessage('Search score built.');
         }
 
         // Get user fullName if correct collection is given
@@ -252,25 +224,13 @@ class AmSearch_SearchService extends BaseApplicationComponent
             $query->addSelect('IF (users.lastName != "", CONCAT_WS(" ", users.firstName, users.lastName), users.firstName) AS fullName');
         }
 
-        // Start the timer
-        craft()->amSearch_debug->startTimer();
-
         // Find records!
         $elements = $query->queryAll();
 
-        // Stop timer
-        craft()->amSearch_debug->addMessage('Query executed.');
-
         // Handle found elements
         if ($elements) {
-            // Start the timer
-            craft()->amSearch_debug->startTimer();
-
             // Handle elements!
             $this->_handleElements($elements);
-
-            // Stop timer
-            craft()->amSearch_debug->addMessage('Elements handled.');
         }
     }
 
