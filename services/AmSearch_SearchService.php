@@ -247,6 +247,14 @@ class AmSearch_SearchService extends BaseApplicationComponent
                 continue;
             }
 
+            // Give plugins a chance to ignore this element
+            $ignoreElement = craft()->plugins->call('ignoreElementInSearchResults', array('element' => $element));
+            if (in_array(true, $ignoreElement)) {
+                // We handled the element!
+                $this->_handledElements[ $element['id'] ] = true;
+                continue;
+            }
+
             // Handle element
             switch ($this->_collection->type) {
                 case 'fuzzy':
