@@ -107,17 +107,19 @@ class AmSearch_SearchService extends BaseApplicationComponent
      * Filter results.
      *
      * @param array $results
+     * @param int   $limit   [Optional] Required for AmSearchPaginate.
+     * @param int   $offset  [Optional] Required for AmSearchPaginate.
      *
      * @return array
      */
-    public function filterResults($results)
+    public function filterResults($results, $limit = false, $offset = 0)
     {
         $returnResults = array();
 
         // Limit and offset the results?
         $counter = 0;
-        $limit = $this->_getSearchParam('limit', false);
-        $offset = $this->_getSearchParam('offset', 0);
+        $limit = $this->_getSearchParam('limit', $limit);
+        $offset = $this->_getSearchParam('offset', $offset);
         if (! is_numeric($limit)) {
             $limit = false;
         }
