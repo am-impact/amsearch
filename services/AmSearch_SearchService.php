@@ -100,14 +100,56 @@ class AmSearch_SearchService extends BaseApplicationComponent
             $this->_sortSearchResults($order, $sort);
         }
 
+        return $this->_searchResults;
+    }
+
+    /**
+     * Filter results.
+     *
+     * @param array $results
+     *
+     * @return array
+     */
+    public function filterResults($results)
+    {
+        $returnResults = array();
+
         // Limit and offset the results?
+        $counter = 0;
         $limit = $this->_getSearchParam('limit', false);
-        if ($limit && is_numeric($limit)) {
-            $offset = $this->_getSearchParam('offset', 0);
-            $this->_searchResults = array_slice($this->_searchResults, $offset, $limit);
+        $offset = $this->_getSearchParam('offset', 0);
+        if (! is_numeric($limit)) {
+            $limit = false;
         }
 
-        return $this->_searchResults;
+        foreach ($results as $key => $result) {
+            // Can we gather results?
+            if ($offset > 0) {
+                if ($counter >= $offset) {
+                    $offset = 0; // Stop our check
+                    $counter = 0; // Use for limiting results
+                }
+                else {
+                    $counter ++;
+                    continue;
+                }
+            }
+            elseif ($limit && $counter >= $limit) {
+                break;
+            }
+
+            // Give plugins a chance to ignore this element
+            $ignoreElement = craft()->plugins->call('ignoreElementInSearchResults', array('element' => $result));
+            if (in_array(true, $ignoreElement)) {
+                continue;
+            }
+
+            // We've added a result
+            $counter ++;
+            $returnResults[] = $result;
+        }
+
+        return $returnResults;
     }
 
     /**
@@ -244,14 +286,6 @@ class AmSearch_SearchService extends BaseApplicationComponent
         foreach ($elements as $element) {
             // Did we add this element to the search results already?
             if (isset($this->_handledElements[ $element['id'] ])) {
-                continue;
-            }
-
-            // Give plugins a chance to ignore this element
-            $ignoreElement = craft()->plugins->call('ignoreElementInSearchResults', array('element' => $element));
-            if (in_array(true, $ignoreElement)) {
-                // We handled the element!
-                $this->_handledElements[ $element['id'] ] = true;
                 continue;
             }
 

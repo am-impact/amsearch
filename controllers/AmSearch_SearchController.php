@@ -32,6 +32,9 @@ class AmSearch_SearchController extends BaseController
         // Find search results!
         $results = craft()->amSearch_search->getResults($collections, $params);
         if ($results) {
+            // Filter before returning
+            $results = craft()->amSearch_search->filterResults($results);
+
             $returnData['success'] = true;
             $returnData['results'] = $results;
         }
