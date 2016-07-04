@@ -92,7 +92,7 @@ class AmSearchTemplateHelper
         $paginateVariable->currentPage = $currentPage;
         $paginateVariable->totalPages = $totalPages;
 
-        $searchResults = craft()->amSearch_search->filterResults($searchResults, $limit, $offset);
+        $searchResults = array_slice($searchResults, $offset, $limit);
 
         return array($paginateVariable, $searchResults);
     }

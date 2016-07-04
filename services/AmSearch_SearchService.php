@@ -100,58 +100,14 @@ class AmSearch_SearchService extends BaseApplicationComponent
             $this->_sortSearchResults($order, $sort);
         }
 
-        return $this->_searchResults;
-    }
-
-    /**
-     * Filter results.
-     *
-     * @param array $results
-     * @param int   $limit   [Optional] Required for AmSearchPaginate.
-     * @param int   $offset  [Optional] Required for AmSearchPaginate.
-     *
-     * @return array
-     */
-    public function filterResults($results, $limit = false, $offset = 0)
-    {
-        $returnResults = array();
-
         // Limit and offset the results?
-        $counter = 0;
-        $limit = $this->_getSearchParam('limit', $limit);
-        $offset = $this->_getSearchParam('offset', $offset);
-        if (! is_numeric($limit)) {
-            $limit = false;
+        $limit = $this->_getSearchParam('limit', false);
+        if ($limit && is_numeric($limit)) {
+            $offset = $this->_getSearchParam('offset', 0);
+            $this->_searchResults = array_slice($this->_searchResults, $offset, $limit);
         }
 
-        foreach ($results as $key => $result) {
-            // Can we gather results?
-            if ($offset > 0) {
-                if ($counter >= $offset) {
-                    $offset = 0; // Stop our check
-                    $counter = 0; // Use for limiting results
-                }
-                else {
-                    $counter ++;
-                    continue;
-                }
-            }
-            elseif ($limit && $counter >= $limit) {
-                break;
-            }
-
-            // Give plugins a chance to ignore this element
-            $ignoreElement = craft()->plugins->call('ignoreElementInSearchResults', array('element' => $result));
-            if (in_array(true, $ignoreElement)) {
-                continue;
-            }
-
-            // We've added a result
-            $counter ++;
-            $returnResults[] = $result;
-        }
-
-        return $returnResults;
+        return $this->_searchResults;
     }
 
     /**
@@ -285,9 +241,25 @@ class AmSearch_SearchService extends BaseApplicationComponent
      */
     private function _handleElements($elements)
     {
+        // Give plugins a chance to give a specific set of accepted elements
+        $acceptedElementIds = array();
+        $pluginsAcceptedElementIds = craft()->plugins->call('acceptedElementIdsInSearchResults', array('elementType' => $this->_collection->elementType));
+        if ($pluginsAcceptedElementIds) {
+            foreach ($pluginsAcceptedElementIds as $pluginAcceptedElementIds) {
+                if ($pluginAcceptedElementIds !== false && is_array($pluginAcceptedElementIds)) {
+                    $acceptedElementIds = array_merge($acceptedElementIds, $pluginAcceptedElementIds);
+                }
+            }
+        }
+
         foreach ($elements as $element) {
             // Did we add this element to the search results already?
             if (isset($this->_handledElements[ $element['id'] ])) {
+                continue;
+            }
+
+            // Is this element accepted?
+            if (count($acceptedElementIds) && ! in_array($element['id'], $acceptedElementIds)) {
                 continue;
             }
 
