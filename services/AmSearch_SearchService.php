@@ -246,7 +246,12 @@ class AmSearch_SearchService extends BaseApplicationComponent
         $pluginsAcceptedElementIds = craft()->plugins->call('acceptedElementIdsInSearchResults', array('elementType' => $this->_collection->elementType));
         if ($pluginsAcceptedElementIds) {
             foreach ($pluginsAcceptedElementIds as $pluginAcceptedElementIds) {
-                if ($pluginAcceptedElementIds !== false && is_array($pluginAcceptedElementIds)) {
+                if ($pluginAcceptedElementIds === false) {
+                    // We don't accept any of the elements
+                    return false;
+                }
+                elseif (is_array($pluginAcceptedElementIds)) {
+                    // We accept a specific set of the elements
                     $acceptedElementIds = array_merge($acceptedElementIds, $pluginAcceptedElementIds);
                 }
             }
