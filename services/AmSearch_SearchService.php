@@ -69,7 +69,7 @@ class AmSearch_SearchService extends BaseApplicationComponent
 
         // Get plugin search settings
         if (! $this->_excerptPrefix) {
-            $searchSettings = craft()->amSearch_settings->getAllSettingsByType(AmSearchModel::SettingSearch);
+            $searchSettings = craft()->amSearch_settings->getSettingsByType(AmSearchModel::SettingSearch);
             if ($searchSettings) {
                 foreach ($searchSettings as $searchSetting) {
                     $this->{'_' . $searchSetting->handle} = $searchSetting->value;

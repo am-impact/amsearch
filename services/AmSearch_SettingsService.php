@@ -7,6 +7,17 @@ namespace Craft;
 class AmSearch_SettingsService extends BaseApplicationComponent
 {
     /**
+     * Get all settings.
+     *
+     * @return array
+     */
+    public function getSettings()
+    {
+        $settingRecords = AmSearch_SettingRecord::model()->ordered()->findAll();
+        return AmSearch_SettingModel::populateModels($settingRecords, 'handle');
+    }
+
+    /**
      * Get all settings by their type.
      *
      * @param string $type
@@ -14,7 +25,7 @@ class AmSearch_SettingsService extends BaseApplicationComponent
      *
      * @return AmSearch_SettingModel
      */
-    public function getAllSettingsByType($type, $enabled = '*')
+    public function getSettingsByType($type, $enabled = '*')
     {
         $attributes = array(
             'type' => $type
@@ -34,17 +45,6 @@ class AmSearch_SettingsService extends BaseApplicationComponent
     }
 
     /**
-     * Get all settings.
-     *
-     * @return array
-     */
-    public function getAllSettings()
-    {
-        $settingRecords = AmSearch_SettingRecord::model()->ordered()->findAll();
-        return AmSearch_SettingModel::populateModels($settingRecords, 'handle');
-    }
-
-    /**
      * Get a setting by their handle and type.
      *
      * @param string $handle
@@ -52,7 +52,7 @@ class AmSearch_SettingsService extends BaseApplicationComponent
      *
      * @return AmSearch_SettingModel
      */
-    public function getSettingsByHandleAndType($handle, $type)
+    public function getSettingByHandleAndType($handle, $type)
     {
         $attributes = array(
             'type' => $type,
@@ -74,13 +74,19 @@ class AmSearch_SettingsService extends BaseApplicationComponent
      * @param string $type
      * @param mixed  $defaultValue
      *
-     * @return mixed
+     * @return AmSearch_SettingModel
      */
-    public function getSettingsValueByHandleAndType($handle, $type, $defaultValue)
+    public function getSettingValue($handle, $type, $defaultValue = null)
     {
-        $setting = $this->getSettingsByHandleAndType($handle, $type);
-        if ($setting) {
-            return $setting->value;
+        $attributes = array(
+            'type' => $type,
+            'handle' => $handle
+        );
+
+        // Find record
+        $settingRecord = AmSearch_SettingRecord::model()->findByAttributes($attributes);
+        if ($settingRecord) {
+            return $settingRecord->value;
         }
         return $defaultValue;
     }
@@ -93,7 +99,7 @@ class AmSearch_SettingsService extends BaseApplicationComponent
      */
     public function isSettingValueEnabled($handle, $type)
     {
-        $setting = $this->getSettingsByHandleAndType($handle, $type);
+        $setting = $this->getSettingByHandleAndType($handle, $type);
         if (is_null($setting)) {
             return false;
         }

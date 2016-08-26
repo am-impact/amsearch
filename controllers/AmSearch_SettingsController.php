@@ -18,27 +18,36 @@ class AmSearch_SettingsController extends BaseController
     }
 
     /**
-     * Show General settings.
+     * Redirect index.
      */
     public function actionIndex()
     {
-        $variables = array(
-            'type'    => AmSearchModel::SettingGeneral,
-            'general' => craft()->amSearch_settings->getAllSettingsByType(AmSearchModel::SettingGeneral)
-        );
-        $this->renderTemplate('amSearch/settings/index', $variables);
+        $this->redirect('amsearch/settings/general');
     }
 
     /**
-     * Show Search settings.
+     * Show settings.
+     *
+     * @param array $variables
      */
-    public function actionSearch()
+    public function actionShowSettings(array $variables = array())
     {
-        $variables = array(
-            'type'   => AmSearchModel::SettingSearch,
-            'search' => craft()->amSearch_settings->getAllSettingsByType(AmSearchModel::SettingSearch)
-        );
-        $this->renderTemplate('amSearch/settings/search', $variables);
+        // Do we have a settings type?
+        if (! isset($variables['settingsType'])) {
+            throw new Exception(Craft::t('Settings type is not set.'));
+        }
+        $settingsType = $variables['settingsType'];
+
+        // Do we have any settings?
+        $settings = craft()->amSearch_settings->getSettingsByType($settingsType);
+        if (! $settings) {
+            throw new Exception(Craft::t('There are no settings available for settings type “{type}”.', array('type' => $settingsType)));
+        }
+
+        // Show settings!
+        $variables['type'] = $settingsType;
+        $variables[$settingsType] = $settings;
+        $this->renderTemplate('amSearch/settings/' . $settingsType, $variables);
     }
 
     /**
@@ -72,7 +81,7 @@ class AmSearch_SettingsController extends BaseController
         $success = true;
 
         // Get all available settings for this type
-        $availableSettings = craft()->amSearch_settings->getAllSettingsByType($type);
+        $availableSettings = craft()->amSearch_settings->getSettingsByType($type);
 
         // Save each available setting
         foreach ($availableSettings as $setting) {
@@ -86,10 +95,6 @@ class AmSearch_SettingsController extends BaseController
                 }
             }
         }
-
-        // Save the settings in the plugins table
-        $plugin = craft()->plugins->getPlugin('amSearch');
-        craft()->plugins->savePluginSettings($plugin, $plugin->getSettings());
 
         if ($success) {
             craft()->userSession->setNotice(Craft::t('Settings saved.'));

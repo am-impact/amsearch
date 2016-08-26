@@ -1,8 +1,5 @@
 {% extends 'amsearch/_layouts/settings' %}
 
-{% set title = 'Search'|t %}
-{% set selectedTab = 'search' %}
-
 {% block fields %}
     {{ forms.textField({
         label: search.excerptPrefix.name|t,

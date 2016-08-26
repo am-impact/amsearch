@@ -62,7 +62,7 @@ class AmSearch_InstallService extends BaseApplicationComponent
 
         // Remove settings
         foreach ($settings as $settingName) {
-            $setting = craft()->amSearch_settings->getSettingsByHandleAndType($this->_camelCase($settingName), $settingType);
+            $setting = craft()->amSearch_settings->getSettingByHandleAndType($this->_camelCase($settingName), $settingType);
             if ($setting) {
                 craft()->amSearch_settings->deleteSettingById($setting->id);
             }

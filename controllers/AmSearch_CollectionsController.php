@@ -143,7 +143,7 @@ class AmSearch_CollectionsController extends BaseController
         $variables['collection'] = $collection;
         // Get available collection types
         $variables['collectionType'] = ($collection->type == AmSearchModel::CollectionFuzzy ? Craft::t('Fuzzy') : Craft::t('Standard'));
-        $variables['elementType'] = craft()->elements->getElementType($collection->elementType);
+        $variables['collectionElementType'] = craft()->elements->getElementType($collection->elementType);
 
         // Sources
         $elementSources = array();
@@ -152,7 +152,7 @@ class AmSearch_CollectionsController extends BaseController
             $sources = array($sources);
         }
         foreach ($sources as $source) {
-            $elementSource = $variables['elementType']->getSource($source);
+            $elementSource = $variables['collectionElementType']->getSource($source);
             if ($elementSource) {
                 $elementSources[] = $elementSource['label'];
             }

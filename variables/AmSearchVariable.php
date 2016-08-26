@@ -24,9 +24,9 @@ class AmSearchVariable
      *
      * @return mixed
      */
-    public function getSettingsValueByHandleAndType($handle, $type, $defaultValue = null)
+    public function getSettingValue($handle, $type, $defaultValue = null)
     {
-        return craft()->amSearch_settings->getSettingsValueByHandleAndType($handle, $type, $defaultValue);
+        return craft()->amSearch_settings->getSettingValue($handle, $type, $defaultValue);
     }
 
 

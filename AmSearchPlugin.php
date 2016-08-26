@@ -15,9 +15,9 @@ class AmSearchPlugin extends BasePlugin
     public function getName()
     {
         if (craft()->plugins->getPlugin('amsearch')) {
-            $pluginName = craft()->amSearch_settings->getSettingsByHandleAndType('pluginName', AmSearchModel::SettingGeneral);
-            if ($pluginName && $pluginName->value) {
-                return $pluginName->value;
+            $pluginName = craft()->amSearch_settings->getSettingValue('pluginName', AmSearchModel::SettingGeneral);
+            if ($pluginName) {
+                return $pluginName;
             }
         }
         return Craft::t('a&m search');
@@ -102,8 +102,8 @@ class AmSearchPlugin extends BasePlugin
             'amsearch/settings' => array(
                 'action' => 'amSearch/settings/index'
             ),
-            'amsearch/settings/search' => array(
-                'action' => 'amSearch/settings/search'
+            'amsearch/settings/(?P<settingsType>{handle})' => array(
+                'action' => 'amSearch/settings/showSettings'
             ),
         );
     }

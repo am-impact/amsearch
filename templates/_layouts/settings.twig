@@ -1,8 +1,15 @@
-{% extends '_layouts/cp' %}
+{% extends "amsearch/_layouts/cp" %}
 
 {% set fullPageForm = true %}
 
 {% import '_includes/forms' as forms %}
+
+{% set navItems = {
+    'general': { title: "General"|t },
+    'search': { title: "Search"|t },
+} %}
+{% set selectedItem = craft.request.getSegment(3) %}
+{% set title = navItems[selectedItem].title %}
 
 {% set crumbs = [
     { label: craft.amSearch.name, url: url('amsearch') },
@@ -10,10 +17,19 @@
     { label: title, url: '#' }
 ] %}
 
-{% set tabs = {
-    general: { label: 'General'|t, url: url('amsearch/settings') },
-    search: { label: 'Search'|t, url: url('amsearch/settings/search') },
-} %}
+{% block sidebar %}
+    <nav>
+        <ul>
+            {% for id, item in navItems %}
+                {% if item.heading is defined %}
+                    <li class="heading"><span>{{ item.heading }}</span></li>
+                {% else %}
+                    <li><a href="{{ url('amsearch/settings/' ~ id) }}"{% if id == selectedItem %} class="sel"{% endif %}>{{ item.title }}</a></li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </nav>
+{% endblock %}
 
 {% block content %}
     <input type="hidden" name="settingsType" value="{{ type }}">
