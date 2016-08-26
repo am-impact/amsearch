@@ -374,6 +374,11 @@ class AmSearch_SearchService extends BaseApplicationComponent
                 $value = DateTime::createFromString($value)->mySqlDateTime();
             }
 
+            // Fix JSON
+            if (is_string($value) && ($jsonValue = json_decode($value, true)) && (json_last_error() === JSON_ERROR_NONE)) {
+                $value = $jsonValue;
+            }
+
             $key = str_replace('field_', '', $key);
             $searchResult[$key] = $value;
         }
