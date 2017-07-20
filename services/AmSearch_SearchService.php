@@ -192,6 +192,11 @@ class AmSearch_SearchService extends BaseApplicationComponent
                         unset($sourcesCriteria['editable']);
                     }
                     break;
+                case 'Commerce_Product':
+                    if (isset($sourcesCriteria['editable'])) {
+                        unset($sourcesCriteria['editable']);
+                    }
+                    break;
             }
 
             // Set all criteria now!
